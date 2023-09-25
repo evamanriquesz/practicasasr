@@ -10,5 +10,23 @@ Posteriormente, se ha de habilitar SSH tanto para la máquina de salto desde el 
 
 #### Creación máquinas virtuales
 
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/06ec0c7f-b047-4944-9fbe-bcd283fad344)
+
+#### Creación reglas firewall 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/42e826c1-3a7e-42ae-9fb5-d18a45512fc7)
+
+#### Creación claves SSH
+
+ ![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/dff71ce0-a285-46b7-8fa8-469420cfa2ea)
+
+#### Prueba descarga NGINX y funcionamiento NGINX y SSH
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/eced59f5-fd52-4afa-ac53-a3137de3798e)
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/c6ed2656-6571-4101-94c7-bd6ed9deacbe)
+
+## SOLUCIÓN 2 - INTRODUCCIÓN A LOS WAF - WEB APPLICATION FIREWALL (FIREWALL CAPA 7) 
+
 
 
