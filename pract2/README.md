@@ -39,6 +39,34 @@ Como se ha mencionado previamente, el servidor web no cuenta con IP pública, pe
 
 #### Creación reglas firewall 
 
+- Regla 1: Para la comunicación entre el PC y el servidor de salto, mediante TCP puerto 22.
+- Regla 3: Para la comunicación entre el servidor de salto y el servidor web, mediante TCP puerto 22.
+- Regla 4: Para permitir el tráfico de Google en el servidor de salto, mediante TCP puerto 80.
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/e00f110d-3452-4f21-9fe3-39c21ed53698)
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/634d144a-6501-496e-b089-31108de154c0)
+
+#### Configuración Load Balancer L7 
+
+En primer lugar, para la configuración del balanceador de cargas de capa 7, es necesario crear un certificado mediante OpenSSL y firmarlo utilizando CRT. Puesto que la firma ser
+
+#### Configuración SSH y Cloud NAT
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/8ce88d54-aafc-403d-af51-55e8d40979c8)
+
+Tras esta configuración, es posible acceder a las máquinas por ssh: 
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/66cd8400-b062-4038-9a3b-ec5c64297092)
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/4f3e9520-de89-47ec-9c75-a2e705264f12)
+
+En cambio, esto no es suficiente para poder descargar NGINX, ya que la máquina server no tiene conexión a internet. Se habilita el Cloud NAT para poder hacerlo. Este es otro cambio introducido respecto al apartado 1, en el cual la máquina web tenia acceso a internet y no era necesario el paso intermedio de Cloud NAT. 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/da8144c2-c6a6-4913-9761-67260188be3e)
+
+
+
+
+
+
 
 
 
