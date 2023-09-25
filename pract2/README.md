@@ -28,5 +28,6 @@ Posteriormente, se ha de habilitar SSH tanto para la máquina de salto desde el 
 
 ## SOLUCIÓN 2 - INTRODUCCIÓN A LOS WAF - WEB APPLICATION FIREWALL (FIREWALL CAPA 7) 
 
+En esta solución, se han de crear dos nuevas máquinas: de salto y servidor. La primera tendrá IP pública y privada, mientras que la segunda, únicamente tendrá IP pública. Así mismo, se deberá montar un balanceador de cargas de capa 7 con servicio de WAF haciendo HTTPS offloading para comunicar las máquinas con el exterior. Este balanceador recibirá peticiones por el puert o443 y las convertirá al puerto 80. Además, también se ha de restringir el tráfico únicamente a España, así como proteger nuestra máquina de SQL Injection y XSS. 
 
 
