@@ -98,7 +98,21 @@ Y para verificar que el apartado se ha realizado de manera correcta, se introduc
 
 En este segundo apartado, se ha modificado la máquina web para que no tenga IP Pública, se ha configurado Cloud NAT para poder acceder a Internet desde el servidor Web, se ha implementado una nueva regla de firewall referente a la comunicación con el rango de IPs de Google, se han implementado dos health checks para comprobar el correcto funcionamiento de la comunicación del servidor de salto con el PC y con las IPs de Google; y, por último, se ha implementado el balanceador de cargas, a través del cual pasa la información como intermediario entre el servidor web e Internet. 
 
+## SOLUCIÓN 3 - Zero Trust 
 
+Para este apartado, se ha de eliminar el HTTPS offloading y se ha de cifrar la comunicación dentro del cloud. Esta solución responde al inconveniente mencionado previamente: la comunicación entre el servidor web y el balanceador era insegura. 
+
+XXXX TERMINARLO XXXX 
+
+## SOLUCIÓN 4 - OTRAS MEJORAS 
+
+#### ¿Qué otras mejoras se te ocurrirían para mejorar la seguridad o disponibilidad del servidor web?
+
+- Utilizar WAF para defenderse de otro tipo de ataques o de otras posibles vulnerabilidades, como pueden ser ataques de inserción, de inclusión de archivos...
+- Configurar los diferentes elementos redundantes, de manera que si uno falla, no se caiga el sistema
+- AÑADIR OTRA XXXXXXX
+
+- 
 
 
 
