@@ -48,7 +48,13 @@ Como se ha mencionado previamente, el servidor web no cuenta con IP pública, pe
 
 #### Configuración Load Balancer L7 
 
-En primer lugar, para la configuración del balanceador de cargas de capa 7, es necesario crear un certificado mediante OpenSSL y firmarlo utilizando CRT. Puesto que la firma ser
+En primer lugar, para la configuración del balanceador de cargas de capa 7, es necesario crear un certificado mediante OpenSSL y firmarlo utilizando CRT. Puesto que la firma será realizada por mi, más adelante se considerará la conexión insegura. A continuación, se configura el front y el back end. Para el backend se creará un grupo de instancias sobre las que aplica. En este caso únicamente aplicará sobre el servidor web, pero esto es una buena práctica para añadir más máquinas en un futuro. Por último, se deberán implementar dos health checks, uno para asegurar que el servidor está operativo, haciendo una llamada TCP al puerto 80; y otro para asegurar la conexión del servidor de salto con el rango de IPs de Google. 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/cfbfa9d7-69e9-44e7-b95c-ec0f4071fd2b)
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/548df74a-3405-4d89-8541-54a0daf8d4ed)
+
+Todo este punto en sí difiere con lo realizado en el apartado anterior, donde la conexión se realizaba directamente a internet, sin pasar por este tipo de intermediarios. 
 
 #### Configuración SSH y Cloud NAT
 
@@ -61,6 +67,39 @@ Tras esta configuración, es posible acceder a las máquinas por ssh:
 En cambio, esto no es suficiente para poder descargar NGINX, ya que la máquina server no tiene conexión a internet. Se habilita el Cloud NAT para poder hacerlo. Este es otro cambio introducido respecto al apartado 1, en el cual la máquina web tenia acceso a internet y no era necesario el paso intermedio de Cloud NAT. 
 
 ![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/da8144c2-c6a6-4913-9761-67260188be3e)
+
+#### Implantación WAF - Cloud Armor 
+
+El último requerimiento del apartado consiste en que sólo se permita tráfico de la UE, y que se eviten ataques SQL Injection y XSS. Para ello, se crea una política de seguridad Cloud Armor. Cabe destacar que en esta política es importante tener en cuenta el orden de prioridad, siendo el número más bajo, el elemento más importante. 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/4a978ab3-eb93-44f9-9207-7b8ff92d2333)
+
+De nuevo, este paso también difiere de lo realizado en el apartado anterior. 
+
+#### Resultado final  
+
+Tras la implementación de los pasos previos, se realiza la conexión por SSH del PC a la máquina de salto, y de la máquina de salto a la máquina web, para instalar NGINX con el comando: sudo apt -y install nginx
+
+Para verificar que se ha descargado se ejecuta el comando  curl localhost: 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/d10288c4-ff77-41cc-be2e-b5aa9244a7c4)
+
+Y para verificar que el apartado se ha realizado de manera correcta, se introduce la IP del balanceador de cargas en el navegador, lo cual nos permite comprobar que el apartado se ha realizado con éxito, ya que se muestra la página de bienvenida de NGINX, pudiendo así acceder al servidor web desde Internet, a través del balanceador de cargas. 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/1b35efd8-b20a-4698-a7ac-35b6decab5ad)
+
+#### ¿Qué ventajas e inconvenientes tiene hacer https offloading en el balanceador?
+
+- Ventajas: Reduce la carga y aumenta la eficiencia del servidor web por múltiples razones. Por un lado, el balanceador realiza la tarea de cifrado y descifrado de SSL/TLS, permitiendo así al servidor web centrarse en la tarea de procesar peticiones y respuestas; ya que además, el balanceador de carga también puede realizar labores de enrutamiento. Todo esto permite gestionar un mayor número de conexiones de manera más eficiente.
+
+- Inconvenientes: El uso de este tipo de balanceador supone una brecha de seguridad, ya que el tráfico interno entre los servidores y el balanceador no está cifrado, y puede ser susceptible a ataques. Además, puesto que el balanceador realiza múltiples tareas, se convierte en un punto de fallo potenicial, que puede desavastecer de comunicación a múltiples servidores.
+
+#### ¿Qué pasos adicionales has tenido que hacer para que la máquina pueda salir a internet para poder instalar el servidor nginx?
+
+En este segundo apartado, se ha modificado la máquina web para que no tenga IP Pública, se ha configurado Cloud NAT para poder acceder a Internet desde el servidor Web, se ha implementado una nueva regla de firewall referente a la comunicación con el rango de IPs de Google, se han implementado dos health checks para comprobar el correcto funcionamiento de la comunicación del servidor de salto con el PC y con las IPs de Google; y, por último, se ha implementado el balanceador de cargas, a través del cual pasa la información como intermediario entre el servidor web e Internet. 
+
+
+
 
 
 
