@@ -30,4 +30,16 @@ Posteriormente, se ha de habilitar SSH tanto para la máquina de salto desde el 
 
 En esta solución, se han de crear dos nuevas máquinas: de salto y servidor. La primera tendrá IP pública y privada, mientras que la segunda, únicamente tendrá IP pública. Así mismo, se deberá montar un balanceador de cargas de capa 7 con servicio de WAF haciendo HTTPS offloading para comunicar las máquinas con el exterior. Este balanceador recibirá peticiones por el puert o443 y las convertirá al puerto 80. Además, también se ha de restringir el tráfico únicamente a España, así como proteger nuestra máquina de SQL Injection y XSS. 
 
+#### Creación máquinas virtuales 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/484ac4e3-7e25-41fe-a454-b4bc4849828f)
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/7ff4e75a-72d5-4dd8-988a-544ceaa68bd9)
+
+Como se ha mencionado previamente, el servidor web no cuenta con IP pública, pero, en cambio, pertenece a un grupo de instancias que le permitirá acceder a NGINX. Este es uno de los cambios necesarios respecto al anterior apartado. 
+
+#### Creación reglas firewall 
+
+
+
+
 
