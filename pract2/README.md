@@ -113,7 +113,7 @@ Y para verificar que el apartado se ha realizado de manera correcta, se introduc
 
 #### ¿Qué pasos adicionales has tenido que hacer para que la máquina pueda salir a internet para poder instalar el servidor nginx?
 
-En este segundo apartado, se ha modificado la máquina web para que no tenga IP Pública, se ha configurado Cloud NAT para poder acceder a Internet desde el servidor Web, se ha implementado una nueva regla de firewall referente a la comunicación con el rango de IPs de Google, se han implementado dos health checks para comprobar el correcto funcionamiento de la comunicación del servidor de salto con el PC y con las IPs de Google; y, por último, se ha implementado el balanceador de cargas, a través del cual pasa la información como intermediario entre el servidor web e Internet. 
+En este segundo apartado, se ha modificado la máquina web para que no tenga IP Pública, se ha configurado Cloud NAT para poder acceder a Internet desde el servidor Web, se ha implementado una nueva regla de firewall referente a la comunicación con el rango de IPs de Google, se ha implementado un health check para comprobar el correcto funcionamiento de la comunicación del servidor de salto con las IPs de Google; y, por último, se ha implementado el balanceador de cargas, a través del cual pasa la información como intermediario entre el servidor web e Internet. 
 
 ## SOLUCIÓN 3 - Zero Trust 
 
