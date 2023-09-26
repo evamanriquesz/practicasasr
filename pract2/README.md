@@ -65,7 +65,7 @@ Como se ha mencionado previamente, el servidor web no cuenta con IP pública, pe
 
 #### Configuración Load Balancer L7 
 
-En primer lugar, para la configuración del balanceador de cargas de capa 7, es necesario crear un certificado mediante OpenSSL y firmarlo utilizando CRT. Puesto que la firma será realizada por mi, más adelante se considerará la conexión insegura. A continuación, se configura el front y el back end. Para el backend se creará un grupo de instancias sobre las que aplica. En este caso únicamente aplicará sobre el servidor web, pero esto es una buena práctica para añadir más máquinas en un futuro. Por último, se deberán implementar dos health checks, uno para asegurar que el servidor está operativo, haciendo una llamada TCP al puerto 80; y otro para asegurar la conexión del servidor de salto con el rango de IPs de Google. 
+En primer lugar, para la configuración del balanceador de cargas de capa 7, es necesario crear un certificado mediante OpenSSL y firmarlo utilizando CRT. Puesto que la firma será realizada por mi, más adelante se considerará la conexión insegura. A continuación, se configura el front y el back end. Para el backend se creará un grupo de instancias sobre las que aplica. En este caso únicamente aplicará sobre el servidor web, pero esto es una buena práctica para añadir más máquinas en un futuro. Por último, se deberá implementa un health check, para asegurar la conexión del servidor de salto con el rango de IPs de Google. 
 
 ![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/cfbfa9d7-69e9-44e7-b95c-ec0f4071fd2b)
 
