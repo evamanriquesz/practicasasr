@@ -1,12 +1,19 @@
 # PRACTICA 1 - MÁQUINAS VIRTUALES 
 
-En esta práctica se van a llevar a cabo diferentes formas para conectar una máquina a Internet de manera segura. 
+En esta práctica se van a llevar a cabo diferentes soluciones para conectar una máquina a Internet de manera segura. 
 
 ## SOLUCIÓN 1 - CREACIÓN DE MÁQUINA DE SALTO 
 
 Para esta solución, se han de crear dos máquinas virtuales: el servidor web y el servidor de salto, que será a través del cual nos conectaremos al servidor web. Ambas contarán con IP privada y pública. Asimismo, será necesario crear una subred (vpc-prac2) a la cual se conectarán ambos servidores para estar relacionados entre sí. Por otro lado, también será necesario crear tres reglas de firewall para controlar el tráfico entre servidores y con internet. La primera regla permitirá a la máquina de salto conectarse con la otra máquina, y comunicarse a través del puerto TCP 22. La segunda regla hará referencia a la comunicación del servidor web por los puertos 80 y 443, así como a la otra máquina. Por último, la tercera máquina, deberá permitir el tráfico del servidor de salto al servidor web, y además, la comunicación por el puerto 22. 
 
 Posteriormente, se ha de habilitar SSH tanto para la máquina de salto desde el ordenador, como para la máquina web desde la máquina de salto. Utilizando SSH, se debe instalar NGINX en el servidor web. 
+
+#### Esquema
+
+Las conexiones entre las máquinas deben ser de la siguiente manera: 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/a6a00935-d055-4929-8317-f1be7ba40954)
+
 
 #### Creación máquinas virtuales
 
@@ -29,6 +36,12 @@ Posteriormente, se ha de habilitar SSH tanto para la máquina de salto desde el 
 ## SOLUCIÓN 2 - INTRODUCCIÓN A LOS WAF - WEB APPLICATION FIREWALL (FIREWALL CAPA 7) 
 
 En esta solución, se han de crear dos nuevas máquinas: de salto y servidor. La primera tendrá IP pública y privada, mientras que la segunda, únicamente tendrá IP pública. Así mismo, se deberá montar un balanceador de cargas de capa 7 con servicio de WAF haciendo HTTPS offloading para comunicar las máquinas con el exterior. Este balanceador recibirá peticiones por el puert o443 y las convertirá al puerto 80. Además, también se ha de restringir el tráfico únicamente a España, así como proteger nuestra máquina de SQL Injection y XSS. 
+
+#### Esquema
+
+Las conexiones entre las máquinas deben ser de la siguiente manera:
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/4874fcb1-e656-45bc-976b-dd49d87b9cfc)
 
 #### Creación máquinas virtuales 
 
@@ -100,9 +113,50 @@ En este segundo apartado, se ha modificado la máquina web para que no tenga IP 
 
 ## SOLUCIÓN 3 - Zero Trust 
 
-Para este apartado, se ha de eliminar el HTTPS offloading y se ha de cifrar la comunicación dentro del cloud. Esta solución responde al inconveniente mencionado previamente: la comunicación entre el servidor web y el balanceador era insegura. 
+Para este apartado, se ha de eliminar el HTTPS offloading y se ha de cifrar la comunicación dentro del cloud. Esta solución responde al inconveniente mencionado previamente: la comunicación entre el servidor web y el balanceador era insegura. En este apartado, no se crearán nuevas máquinas, sino que se reutilizarán las de la segunda solución realizando cambios en las configuraciones, así como en los firewall, etc. 
 
-XXXX TERMINARLO XXXX 
+#### Esquema
+
+Las conexiones entre las máquinas deben ser de la siguiente manera:
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/57ed5293-635a-4b7b-aebd-9c08519c7975)
+
+#### Cambios en el load balancer 
+
+Puesto que el Load Balancer ya no tendrá que tener HTTPS offloading, se deberán realizar cambios en él. Se modificará: 
+
+- El protocolo para el Frontend
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/9cf3284f-e65f-4c17-8264-cd25302da7f6)
+
+- El protocolo para el Backend, así como el puerto del grupo de instancias
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/75efbca8-a350-4519-9bba-2b229f5b2191)
+
+- El puerto del Health Check
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/0c14541b-6e54-42a7-8795-a4c6829585b9)
+
+- La regla de Firewall número 4 (la que permite el tráfico con Google) 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/95f604d2-95c1-4fd0-a0c7-5b62c808b020)
+
+Por otro lado, se debe cambiar el puerto de NGINX del 80 al 443 accediendo por SSH desde el PC a la máquina de salto, y de la máquina de salto a la máquina web. Para ello, se copia el certificado a la máquina web, colocándolo en la carpeta de NGINX. A continuación, se modifca el fichero default para indicar dónde se encuentra el certificado, y cambiar el puerto del 80 al 443 para acceder a NGINX desde Internet, como se muestra en las imagenes: 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/ac8924f2-957a-405c-874e-6607dddbbf7f)
+
+El fichero newconf.conf se ha creado con la ubicación de los certificados: 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/9826a7ee-a5b2-4ce1-bc6b-fc2f4e1a75b4)
+
+Tras realizar esta configuración, se comprueba el funcionamiento de NGINX: 
+
+- Comprobando desde CMD el puerto 443 del servidor web: 
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/0898001f-f861-4aa1-b671-6f31ec14cf7b)
+
+- Comprobando desde Internet, accediendo a la IP del Load Balancer por el puerto 443:
+
+![image](https://github.com/evamanriquesz/practicasasr/assets/91720934/e7b4be77-e99f-43b8-a2dc-a6622405f86e)
 
 ## SOLUCIÓN 4 - OTRAS MEJORAS 
 
@@ -110,9 +164,8 @@ XXXX TERMINARLO XXXX
 
 - Utilizar WAF para defenderse de otro tipo de ataques o de otras posibles vulnerabilidades, como pueden ser ataques de inserción, de inclusión de archivos...
 - Configurar los diferentes elementos redundantes, de manera que si uno falla, no se caiga el sistema
-- AÑADIR OTRA XXXXXXX
-
-- 
+- Obtener una firma de una empresa para el certificado, de manera que la conexión no sea insegura
+- Utilizar Cloud CDN. Cloud CDN se utiliza para mejorar el rendimiento y la disponibilidad del sistema, ya que redirecciona el tráfico a través de una red global de servidores proxys. Esto mitiga, entre otros, ataques DDoS ya que filtra el tráfico malicioso antes de llegar al servidor de origen. 
 
 
 
